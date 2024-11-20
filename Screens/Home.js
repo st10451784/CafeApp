@@ -1,53 +1,29 @@
-import { StyleSheet, Text, View, Image, Button } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
 
-const Home = () => {
-  const navigation = useNavigation(); // Hook to navigate between screens
-
-  // Function to handle navigation to Login page
-  const handleEnter = () => {
-    navigation.navigate('Login');
-  };
-
+const Home = ({ navigation, menu }) => {
   return (
     <View style={styles.container}>
-      {/* Display the image at the top */}
-      <Image
-        source={require('./Logo.png')} // Replace with your image path
-        style={styles.image}
+      <Text style={styles.header}>Complete Menu </Text>
+      <FlatList
+        data={menu}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Text style={styles.item}>
+            {item.name} - {item.course} - ${item.price}
+          </Text>
+        )}
       />
-
-      {/* Home text */}
-      <Text style={styles.title}>Welcome to Our App!</Text>
-
-      {/* Button to navigate to Login screen */}
-      <Button title="Enter" onPress={handleEnter} />
-
+      <Button title="Add/Remove Menu Items" onPress={() => navigation.navigate('ChefAddMenu')} />
+      <Button title="Filter Menu" onPress={() => navigation.navigate('GuestFilter')} />
     </View>
-    
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f8f8f8',
-  },
-  image: {
-    width: 200,  // Customize the width
-    height: 200, // Customize the height
-    marginBottom: 20,
-    resizeMode: 'contain', // Ensure the image doesn't stretch
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    textAlign: 'center',
-  },
+  container: { flex: 1, padding: 20 },
+  header: { fontSize: 28, marginBottom: 10, textAlign: 'center' },
+  item: { fontSize: 16, marginBottom: 5 },
 });

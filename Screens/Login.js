@@ -1,46 +1,34 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
 
-const Login = () => {
-  // State to manage input values
+const Login = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  // Use the navigation hook
-  const navigation = useNavigation();
-
-  // Function to handle login
   const handleLogin = () => {
-    // Replace with your authentication logic
-    if (username === 'Sunkish' && password === 'Sunkish2003') {
-      alert('Login successful!');
-      // Navigate to the Menu screen after login
-      navigation.navigate('Menu');
+    if (username === 'Sunkish' && password === '2003') {
+      navigation.navigate('Home');
     } else {
-      alert('Invalid username or password.');
+      Alert.alert('Invalid Credentials', 'Please enter the correct username and password.');
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Login</Text>
-
+      <Text style={styles.header}>Cafe Login</Text>
       <TextInput
         style={styles.input}
         placeholder="Username"
         value={username}
         onChangeText={setUsername}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Password"
         value={password}
         onChangeText={setPassword}
-        secureTextEntry // Hides password input
+        secureTextEntry
       />
-
       <Button title="Login" onPress={handleLogin} />
     </View>
   );
@@ -48,28 +36,8 @@ const Login = () => {
 
 export default Login;
 
-// Styles for the Login component
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#f8f8f8',
-  },
-  header: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
+  container: { flex: 1, justifyContent: 'center', padding: 20 },
+  header: { fontSize: 30, marginBottom: 20, textAlign: 'center' },
+  input: { borderWidth: 1, padding: 10, marginBottom: 10 },
 });
-

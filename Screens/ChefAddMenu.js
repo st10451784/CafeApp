@@ -1,41 +1,47 @@
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
+import { StyleSheet, View, Text, TextInput, Button, FlatList } from 'react-native';
 
-const ChefAddMenu = () => {
-  // State to manage menu input values
-  const [dishName, setDishName] = useState('');
-  const [description, setDescription] = useState('');
+const ChefAddMenu = ({ menu, setMenu }) => {
+  const [name, setName] = useState('');
+  const [course, setCourse] = useState('');
+  const [price, setPrice] = useState('');
 
-  // Function to handle adding a dish
-  const handleAddDish = () => {
-    if (dishName && description) {
-      // Handle adding the dish to the menu (you can replace this with actual logic, such as an API call)
-      alert(`Dish Added: ${dishName}\nDescription: ${description}`);
-    } else {
-      alert('Please enter both dish name and description.');
-    }
+  const addItem = () => {
+    setMenu([...menu, { id: Date.now().toString(), name, course, price: parseFloat(price) }]);
+    setName('');
+    setCourse('');
+    setPrice('');
+  };
+
+  const removeItem = (id) => {
+    setMenu(menu.filter((item) => item.id !== id));
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Add a New Dish to Menu</Text>
-      
+      <Text style={styles.header}>Add/Remove Menu Items</Text>
+      <TextInput style={styles.input} placeholder="Name" value={name} onChangeText={setName} />
+      <TextInput style={styles.input} placeholder="Course" value={course} onChangeText={setCourse} />
       <TextInput
         style={styles.input}
-        placeholder="Dish Name"
-        value={dishName}
-        onChangeText={setDishName}
+        placeholder="Price"
+        value={price}
+        onChangeText={setPrice}
+        keyboardType="numeric"
       />
-      
-      <TextInput
-        style={styles.input}
-        placeholder="Dish Description"
-        value={description}
-        onChangeText={setDescription}
-        multiline
+      <Button title="Add Item" onPress={addItem} />
+      <FlatList
+        data={menu}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.item}>
+            <Text>
+              {item.name} - {item.course} - ${item.price}
+            </Text>
+            <Button title="Remove" onPress={() => removeItem(item.id)} />
+          </View>
+        )}
       />
-      
-      <Button title="Add Dish" onPress={handleAddDish} />
     </View>
   );
 };
@@ -43,25 +49,8 @@ const ChefAddMenu = () => {
 export default ChefAddMenu;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-    backgroundColor: '#f8f8f8',
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-    backgroundColor: '#fff',
-  },
+  container: { flex: 1, padding: 20 },
+  header: { fontSize: 28, marginBottom: 10 },
+  input: { borderWidth: 1, marginBottom: 10, padding: 10 },
+  item: { marginBottom: 10 },
 });
